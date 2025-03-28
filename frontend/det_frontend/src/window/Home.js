@@ -7,7 +7,7 @@ const Home = () => {
     useEffect(() => {
         const getData = async () => {
             try{
-                const response = await axios.get("https://daily-expense-tracker-rmmm.onrender.com/");
+                const response = await axios.get("https://daily-expense-tracker-rmmm.onrender.com/users/");
                 setData(response.data);
             } catch(e) {
                 console.log(e);
