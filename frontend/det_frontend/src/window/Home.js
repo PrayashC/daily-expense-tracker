@@ -6,7 +6,7 @@ const Home = () => {
 
     useEffect(async () => {
         try{
-            const response = await axios.get("http://localhost:5000");
+            const response = await axios.get("https://daily-expense-tracker-rmmm.onrender.com/");
             setData(response.data);
         } catch(e) {
             console.log(e);
