@@ -8,25 +8,28 @@ const app = express();
 app.use(json());
 app.use(cors());
 
-mongoose.connect(process.env.ATLAS_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
+mongoose.connect(process.env.ATLAS_URI)
 .then(() => console.log("MongoDB connected!"))
 .catch(err => console.log(err));
 
-const UserSchema = new mongoose.Schema({username: String, password: String});
+const UserSchema = new mongoose.Schema({
+    username:  { type: String },
+    password:  { type: String },
+});
 
-const User = mongoose.model("User", UserSchema, "users")
+const User = mongoose.model("User", UserSchema, "users");
 
-app.get("/", async (req, res) => {
-    try {
-        const users = await User.find();
-        res.json(users);
-        console.log(users)
-    } catch (e) {
-        res.status(500).json({error: "Failed to fetch data"});
+app.get("/", (req, res) => {
+    const getUserData = async () => {
+        try {
+            const users = await User.find();
+            res.json(users);
+            console.log(users);
+        } catch (e) {
+            res.status(500).json({error: "Failed to fetch data"});
+        }
     }
+    getUserData();
 });
 
 const PORT = process.env.PORT || 5000;
