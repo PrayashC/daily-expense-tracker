@@ -5,12 +5,15 @@ const Home = () => {
     const [data, setData] = useState(null);
 
     useEffect(async () => {
-        try{
-            const response = await axios.get("https://daily-expense-tracker-rmmm.onrender.com/");
-            setData(response.data);
-        } catch(e) {
-            console.log(e);
+        const getData = async () => {
+            try{
+                const response = await axios.get("https://daily-expense-tracker-rmmm.onrender.com/");
+                setData(response.data);
+            } catch(e) {
+                console.log(e);
+            }
         }
+        getData();
     }, []);
 
     return (
