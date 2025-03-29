@@ -35,5 +35,26 @@ app.get('/', async (req, res) => {
   }
 });
 
+app.post('/signup', async (req, res) => {
+  try{
+    const { data } = req.body;
+    await usersCollection.insertOne(data);
+    res.status(200).json({ message: 'Form data received successfully' });
+  } catch(e) {
+    res.status(500).json({ error: 'upload data failed' });
+  }
+})
+
+// app.delete('/delete', async (req, res) => {
+//   try{
+//     const { username } = req.body;
+//     await usersCollection.deleteOne({username: username})
+//     res.send("DELETE Request Called,", `${username}`, "deleted")
+//   } catch(e) {
+//     res.status(500).json({ error: 'delete data failed' });
+//   }
+// })
+      
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
