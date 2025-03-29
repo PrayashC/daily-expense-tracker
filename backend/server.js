@@ -8,6 +8,7 @@ const app = express();
 app.use(json());
 app.use(cors());
 mongoose.set('debug', true);
+mongoose.set('strictQuery', false);
 
 connect(process.env.ATLAS_URI)
 .then(() => console.log("MongoDB connected!"))
