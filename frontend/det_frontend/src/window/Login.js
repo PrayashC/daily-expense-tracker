@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import {Link} from 'react-router-dom'
 
 function Login() {
-    const [username,setUsername]=useState("")
-    const [password,setPassword]=useState("")
+    const [username, setUsername]=useState("")
+    const [password, setPassword]=useState("")
 
     const handleLogin = (e) => {
         e.preventDefault()

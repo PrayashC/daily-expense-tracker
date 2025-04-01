@@ -18,27 +18,39 @@ const Signup = () => {
         }
       });
       console.log('Server response:', response.data);
+      if (!response.ok) {
+        // If validation errors exist, display them
+        console.log(data.errors); // Log error
+        return;
+      }
     } catch (error) {
-      console.error('Error submitting form:', error);
+      if (error.response) {
+        // Validation errors from backend
+        console.log(error.response.data.errors);
+        alert(error.response.data.errors.map(err => err.msg).join('\n'));
+      } else {
+        console.error('Server error:', error);
+        //alert('Something went wrong.');
+      }
     }
     setUsername("");
     setPassword("");
   };
 
-  // const handelDelete = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await axios.post('http://localhost:5000/delete', { username: deleteUser } , {
-  //       headers: {
-  //         'Content-Type': 'application/json'
-  //       }
-  //     });
-  //     console.log('Server response:', response.data);
-  //   } catch (error) {
-  //     console.error('Error submitting form:', error);
-  //   }
-  //   setDeleteUser("");
-  // }
+  const handelDelete = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.delete(`http://localhost:5000/delete/${deleteUser}`, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      console.log('Server response:', response.data);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
+    setDeleteUser("");
+  }
 
   return (
     <div className='bg-slate-900 w-full h-screen flex flex-col items-center justify-center '>
@@ -88,13 +100,13 @@ const Signup = () => {
           </div>
         </form>
       </div>
-      {/* <div>
+      <div>
         <h1>To delete user enter username</h1>
       </div>
       <div>
         <form className="w-full max-w-sm" onSubmit={handelDelete}>
           <div className="flex items-center border-b border-teal-500 py-2">
-            <input className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+            <input className="appearance-none bg-transparent border-none w-full text-white mr-3 py-1 px-2 leading-tight focus:outline-none"
               type="text"
               placeholder="Username"
               aria-label="Full name"
@@ -108,7 +120,7 @@ const Signup = () => {
             </button>
           </div>
         </form>
-      </div> */}
+      </div>
     </div>
   )
 }
