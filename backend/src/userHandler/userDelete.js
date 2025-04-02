@@ -1,3 +1,5 @@
+import { usersCollection } from '../db.js';
+
 const Delete =  async (req, res) => {
   try{
     const { username } = req.params;

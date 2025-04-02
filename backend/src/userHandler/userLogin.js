@@ -1,3 +1,4 @@
+import { usersCollection } from '../db.js';
 import bcrypt from 'bcrypt';
 
 const Login = async (req, res) => {

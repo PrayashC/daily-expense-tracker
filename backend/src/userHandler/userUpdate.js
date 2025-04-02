@@ -1,3 +1,5 @@
+import { usersCollection } from '../db.js';
+
 const Update = async (req, res) => {
     const errors = validationResult(req);
 
