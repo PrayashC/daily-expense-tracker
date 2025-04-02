@@ -7,7 +7,7 @@ const Login = async (req, res) => {
     
     const user = await usersCollection.findOne({ username });
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ success: false, message: 'User not found' });
     }
 
     const match = await bcrypt.compare(password, user.password); // Comparing Hashed password

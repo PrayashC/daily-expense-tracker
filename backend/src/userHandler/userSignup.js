@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid'; 
 
 const Signup = async (req, res) => {
-        try{
+    try{
       const { username, password } = req.body;
       const hashedPassword = await bcrypt.hash(password, 10); // Hasing Password
       const userId = uuidv4();
