@@ -10,6 +10,6 @@ app.use(express.json());
 
 connectToDatabase();
 
-app.use('', router);
+app.use('/', router);
 
 export default app;
