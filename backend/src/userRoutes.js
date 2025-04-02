@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.get('/', getUser);
 router.post('/signup', SignupValidator, Signup);
-router.get('/login', Login);
+router.post('/login', Login);
 router.delete('/delete/:username', Delete);
 router.put('/update/:username', UpdateValidator, Update);
 
