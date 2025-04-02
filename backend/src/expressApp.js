@@ -8,6 +8,10 @@ app.use(cors());
 
 app.use(express.json());
 
+app.get('/', (req, res) => {
+    res.send('Hello, world!');
+  });
+  
 connectToDatabase();
 
 app.use('/', router);
