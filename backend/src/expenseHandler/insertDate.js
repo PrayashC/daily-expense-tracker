@@ -1,4 +1,4 @@
-import { expensesCollection } from "../db";
+import { expensesCollection } from "../db.js";
 
 const InsDate = async (req, res) => {
     const { userId, date } = req.body;
