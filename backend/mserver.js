@@ -9,8 +9,13 @@ import bcrypt from 'bcrypt';
 dotenv.config();
 
 const app = express();
+app.use(cors({
+  origin: 'http://localhost:3000', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+  allowedHeaders: ['Content-Type', 'Authorization'] 
+}));
 app.use(express.json());
-app.use(cors());
+
 
 const client = new MongoClient(process.env.ATLAS_URI);
 
@@ -80,8 +85,9 @@ app.post('/signup', [
 })
 
 
-app.get('/login', async (req, res) => {
-  try{
+app.post('/login', async (req, res) => {
+  console.log(req.body);
+  try {
     const { username, password } = req.body;
     
     const user = await usersCollection.findOne({ username });
@@ -91,14 +97,14 @@ app.get('/login', async (req, res) => {
 
     const match = await bcrypt.compare(password, user.password); // Comparing Hashed password
     if (match) {
-      res.status(200).json({ message: 'Login successful' });
+      res.status(200).json({ message: 'Login successful', userId: user._id });
     } else {
       res.status(400).json({ message: 'Wrong password!' });
     }
   } catch (err) {
     res.status(500).json({ message: 'Error logging in', error: err });
   }
-})
+});
 
 app.delete('/delete/:username', [
   body('username').notEmpty().withMessage('Username is required')

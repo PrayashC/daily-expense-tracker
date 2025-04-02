@@ -1,13 +1,38 @@
 import React, { useState } from 'react';
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
+import axios from 'axios';
 
 function Login() {
     const [username, setUsername]=useState("")
     const [password, setPassword]=useState("")
+    const navigate= useNavigate();
 
-    const handleLogin = (e) => {
-        e.preventDefault()
-    }
+    const handleLogin = async (e) => {
+      e.preventDefault();
+
+      try {
+          // Send POST request to backend login route
+          const response = await axios.post('http://localhost:5000/login', {
+              username,
+              password
+          });
+
+          // If login is successful, redirect to homepage
+          if (response.status === 200) {
+              console.log('Login successful!');
+              navigate('/');  // Redirect to homepage
+          }
+      } catch (error) {
+          if (error.response) {
+              // Handle backend errors (like wrong password or user not found)
+              alert(error.response.data.message || 'An error occurred');
+          } else {
+              console.error('Error logging in:', error);
+              alert('Something went wrong. Please try again.');
+          }
+      }
+  };
+
 
 
 
