@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const client = new MongoClient(process.env.ATLAS_URI);
+const jwtSecret = process.env.JWT_SECRET_KEY;
 
 let usersCollection, expensesCollection;
 
@@ -18,4 +19,4 @@ const connectToDatabase = async () => {
   }
 }
 
-export { connectToDatabase, usersCollection, expensesCollection };
+export { connectToDatabase, usersCollection, expensesCollection, jwtSecret };

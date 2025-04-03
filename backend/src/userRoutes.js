@@ -1,4 +1,5 @@
 import express from 'express';
+import verifyToken from './middlewares/tokenVerification.js';
 import getUser from './userHandler/getUserInfo.js';
 import Signup from './userHandler/userSignup.js';
 import { SignupValidator } from './middlewares/userValidator.js';
