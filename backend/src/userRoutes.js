@@ -10,6 +10,7 @@ import ExpenseDb from './userHandler/createExpenseDb.js';
 import InsDate from './expenseHandler/insertDate.js';
 import InsExpense from './expenseHandler/insertExpenses.js';
 import DeleteExpense from './expenseHandler/deleteExpense.js';
+import UpdateExpense from './expenseHandler/updateExpense.js';
 
 const router = express.Router();
 
@@ -21,7 +22,8 @@ router.put('/update/:username', UpdateValidator, Update);
 router.post('/createdb', ExpenseDb);
 router.post('/insertdate', InsDate);
 router.post('/insertexpense', InsExpense)
-router.delete('/deleteexpense', DeleteExpense);
+router.delete('/deleteexpense/:expend', DeleteExpense);
+router.put('/updateexpense/:oldexpend', UpdateExpense)
 
 export default router;
 

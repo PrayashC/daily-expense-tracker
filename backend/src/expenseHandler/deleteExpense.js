@@ -1,7 +1,8 @@
 import { expensesCollection } from "../db.js";
 
 const DeleteExpense = async (req, res) => {
-    const { userId, date, expend, cost} = req.body;
+  const { expend } = req.params;
+    const { userId, date, cost} = req.body;
     try{
         const result = await expensesCollection.updateOne(
             { _id: userId, "expenseList.date": date },
