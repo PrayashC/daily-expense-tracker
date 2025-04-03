@@ -4,6 +4,15 @@ const UpdateExpense = async (req, res) => {
     const { oldExpend } = req.params;
     const { userId, date, newExpend, newCost} = req.body;
     try{
+        const existingExpense = await expensesCollection.findOne({
+            _id: userId,
+            "expenseList.date": date,
+            "expenseList.expense.expend": newExpend  // Check if the expense already exists
+            });
+          
+        if (existingExpense) {
+            throw new Error("Expense with this name already exists!");
+        }
         const result = await collection.updateOne(
             { 
               _id: new ObjectId(userId), 

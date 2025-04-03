@@ -3,6 +3,16 @@ import { expensesCollection } from "../db.js";
 const InsExpense = async (req, res) => {
     const { userId, date, expend, cost} = req.body;
     try{
+      const existingExpense = await expensesCollection.findOne({
+        _id: userId,
+        "expenseList.date": date,
+        "expenseList.expense.expend": expend  // Check if the expense already exists
+      });
+      
+      if (existingExpense) {
+        throw new Error("Expense with this name already exists!");
+      }
+
         const result = await expensesCollection.updateOne(
             { _id: userId, "expenseList.date": date },
             { $push: { "expenseList.$.expense": {
