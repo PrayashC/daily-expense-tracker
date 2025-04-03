@@ -6,10 +6,12 @@ import bgImage from '../assets/bgImage3.jpg';
 const Signup = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [errorMessage, setErrorMessage] = useState({}); 
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setErrorMessage({});
         try {
             const response = await axios.post('http://localhost:5000/signup', { username, password }, {
                 headers: { 'Content-Type': 'application/json' }
@@ -26,8 +28,12 @@ const Signup = () => {
                 alert(message);  
             }
         } catch (error) {
-            if (error.response) {
-                alert(error.response.data.message || 'An error occurred');
+            if (error.response && error.response.data.errors) {
+                const formattedErrors = {};
+                error.response.data.errors.forEach(err => {
+                    formattedErrors[err.path] = err.msg;
+                });
+                setErrorMessage(formattedErrors); 
             } else {
                 console.error('Error signing up:', error);
                 alert('Something went wrong. Please try again.');
@@ -52,6 +58,11 @@ const Signup = () => {
                                 onChange={(e) => setUsername(e.target.value)}
                                 required
                             />
+
+                            {errorMessage.username && (
+                                <div className="text-red-500 text-sm mt-1">{errorMessage.username}</div>
+                            )}
+
                             <label className="block text-white mt-4">Password</label>
                             <input
                                 type="password"
@@ -61,6 +72,11 @@ const Signup = () => {
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
                             />
+
+                            {errorMessage.password && (
+                                <div className="text-red-500 text-sm mt-1">{errorMessage.password}</div>
+                            )}
+
                             <button
                                 className="w-full mt-8 border text-white border-white py-2 px-6 rounded-lg font-semibold hover:bg-white hover:text-slate-900 transition"
                                 onClick={handleSubmit}
@@ -69,7 +85,8 @@ const Signup = () => {
                             </button>
                         </form>
                     </div>
-                    {/* right side */}
+                    
+
                     <div className="w-1/2 flex flex-col items-center justify-center text-white p-8">
                         <h2 className="text-3xl font-semibold text-gray-700">Welcome to DET</h2>
                         <p className="mt-2 text-gray-700">Already have an account?</p>
