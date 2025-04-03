@@ -1,128 +1,89 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import bgImage from '../assets/bgImage3.jpg';
 
 const Signup = () => {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [deleteUser, setDeleteUser] = useState("");
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post('http://localhost:5000/signup', { username, password }, {
+                headers: { 'Content-Type': 'application/json' }
+            });
 
-  const data = { username, password };
+            const { success, message } = response.data;  
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post('http://localhost:5000/signup', data, {
-        headers: {
-          'Content-Type': 'application/json'
+            if (success) {
+                alert(message);  
+                setUsername(""); 
+                setPassword("");
+                navigate('/login');  
+            } else {
+                alert(message);  
+            }
+        } catch (error) {
+            if (error.response) {
+                alert(error.response.data.message || 'An error occurred');
+            } else {
+                console.error('Error signing up:', error);
+                alert('Something went wrong. Please try again.');
+            }
         }
-      });
-      console.log('Server response:', response.data);
-      if (!response.ok) {
-        // If validation errors exist, display them
-        console.log(data.errors); // Log error
-        return;
-      }
-    } catch (error) {
-      if (error.response) {
-        // Validation errors from backend
-        console.log(error.response.data.errors);
-        alert(error.response.data.errors.map(err => err.msg).join('\n'));
-      } else {
-        console.error('Server error:', error);
-        //alert('Something went wrong.');
-      }
-    }
-    setUsername("");
-    setPassword("");
-  };
+    };
 
-  const handelDelete = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.delete(`http://localhost:5000/delete/${deleteUser}`, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-      console.log('Server response:', response.data);
-    } catch (error) {
-      console.error('Error submitting form:', error);
-    }
-    setDeleteUser("");
-  }
-
-  return (
-    <div className='bg-slate-900 w-full h-screen flex flex-col items-center justify-center '>
-      <div>
-        <form className="w-full max-w-sm" onSubmit={handleSubmit}>
-          <div className="md:flex md:items-center mb-6">
-            <div className="md:w-1/3">
-              <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
-                Username
-              </label>
+    return (
+        <div className="bg-gray-200 w-full h-screen fixed flex items-center justify-center"
+            style={{ backgroundImage: `url(${bgImage})`, backgroundSize: "cover", backgroundPosition: "center" }}>
+            <div className="bg-black/30 backdrop-blur-[1.25px] w-full h-screen flex items-center justify-center">
+                <div className="flex bg-white/90 shadow-lg rounded-lg overflow-hidden w-[800px] h-[500px]">
+                    <div className="w-1/2 p-10 bg-gradient-to-r from-zinc-950 to-zinc-700  flex flex-col justify-center h-full gap-4">
+                        <h2 className="text-3xl font-semibold text-white text-center">Sign Up</h2>
+                        <form className="mt-3">
+                            <label className="block text-white">Username</label>
+                            <input
+                                type="text"
+                                className="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
+                                placeholder="Username"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                required
+                            />
+                            <label className="block text-white mt-4">Password</label>
+                            <input
+                                type="password"
+                                className="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
+                                placeholder="Password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                            <button
+                                className="w-full mt-8 border text-white border-white py-2 px-6 rounded-lg font-semibold hover:bg-white hover:text-slate-900 transition"
+                                onClick={handleSubmit}
+                            >
+                                Sign Up
+                            </button>
+                        </form>
+                    </div>
+                    {/* right side */}
+                    <div className="w-1/2 flex flex-col items-center justify-center text-white p-8">
+                        <h2 className="text-3xl font-semibold text-gray-700">Welcome to DET</h2>
+                        <p className="mt-2 text-gray-700">Already have an account?</p>
+                        <Link
+                            to="/login"
+                            className="mt-4 py-2 px-6 border bg-gradient-to-r from-zinc-950 to-zinc-700 text-white rounded-lg font-semibold transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg"
+                        >
+                            Login
+                        </Link>
+                    </div>
+                </div>
             </div>
-            <div className="md:w-2/3">
-              <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" 
-                id="inline-full-name" 
-                type="text" 
-                name="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)} 
-                required />
-            </div>
-          </div>
-          <div className="md:flex md:items-center mb-6">
-            <div className="md:w-1/3">
-              <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
-                Password
-              </label>
-            </div>
-            <div className="md:w-2/3">
-              <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" 
-              id="inline-password" 
-              type="password" 
-              placeholder="******************" 
-              name="password" 
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)} 
-              required />
-            </div>
-          </div>
-          <div className="md:flex md:items-center">
-            <div className="md:w-1/3"></div>
-            <div className="md:w-2/3">
-              <button className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" 
-                type="submit">
-                Sign Up
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
-      <div>
-        <h1>To delete user enter username</h1>
-      </div>
-      <div>
-        <form className="w-full max-w-sm" onSubmit={handelDelete}>
-          <div className="flex items-center border-b border-teal-500 py-2">
-            <input className="appearance-none bg-transparent border-none w-full text-white mr-3 py-1 px-2 leading-tight focus:outline-none"
-              type="text"
-              placeholder="Username"
-              aria-label="Full name"
-              name="username"
-              value={deleteUser}
-              onChange={(e) => setDeleteUser(e.target.value)}
-              required />
-            <button className="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded"
-              type="submit">
-              Delete
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  )
+        </div>
+    );
 }
 
-export default Signup
+export default Signup;
