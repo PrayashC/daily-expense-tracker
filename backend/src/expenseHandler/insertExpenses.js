@@ -1,3 +1,5 @@
+import { expensesCollection } from "../db.js";
+
 const InsExpense = async (req, res) => {
     const { userId, date, expend, cost} = req.body;
     try{
@@ -15,7 +17,7 @@ const InsExpense = async (req, res) => {
             return res.status(200).json({ message: "Expense added successfully!" });
           }
         } catch (error) {
-            res.status(500).json({ message: "Error inserting expense:" });
+            res.status(500).json({ message: "Error inserting expense:",error: error });
         }
 }
 
