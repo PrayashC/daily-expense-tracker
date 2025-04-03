@@ -9,7 +9,7 @@ import { UpdateValidator } from './middlewares/userValidator.js';
 import ExpenseDb from './userHandler/createExpenseDb.js';
 import InsDate from './expenseHandler/insertDate.js';
 import InsExpense from './expenseHandler/insertExpenses.js';
-
+import DeleteExpense from './expenseHandler/deleteExpense.js';
 
 const router = express.Router();
 
@@ -21,7 +21,7 @@ router.put('/update/:username', UpdateValidator, Update);
 router.post('/createdb', ExpenseDb);
 router.post('/insertdate', InsDate);
 router.post('/insertexpense', InsExpense)
-
+router.delete('/deleteexpense', DeleteExpense);
 
 export default router;
 
