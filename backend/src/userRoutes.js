@@ -22,9 +22,10 @@ router.delete('/delete/:username', Delete);
 router.put('/update/:username', UpdateValidator, Update);
 router.post('/createdb', ExpenseDb);
 router.post('/insertdate', InsDate);
-router.post('/insertexpense', InsExpense)
+router.post('/insertexpense', InsExpense);
 router.delete('/deleteexpense/:expend', DeleteExpense);
-router.put('/updateexpense/:oldexpend', UpdateExpense)
+router.put('/updateexpense/:oldexpend', UpdateExpense);
+router.post('/updateexpense', UpdateExpense);
 
 export default router;
 
