@@ -24,8 +24,7 @@ router.post('/createdb', ExpenseDb);
 router.post('/insertdate', InsDate);
 router.post('/insertexpense', InsExpense);
 router.delete('/deleteexpense/:expend', DeleteExpense);
-router.put('/updateexpense/:oldexpend', UpdateExpense);
-router.post('/updateexpense', UpdateExpense);
+router.patch('/updateexpense/:userId/:date/:expend', UpdateExpense);
 
 export default router;
 
