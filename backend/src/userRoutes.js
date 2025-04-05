@@ -12,19 +12,21 @@ import InsDate from './expenseHandler/insertDate.js';
 import InsExpense from './expenseHandler/insertExpenses.js';
 import DeleteExpense from './expenseHandler/deleteExpense.js';
 import UpdateExpense from './expenseHandler/updateExpense.js';
+import GetExpense from './expenseHandler/getExpense.js';
 
 const router = express.Router();
 
-router.get('/', getUser);
+router.get('/userInfo/:userId', getUser);
 router.post('/signup', SignupValidator, Signup);
 router.post('/login', Login);
 router.delete('/delete/:username', Delete);
-router.put('/update/:username', UpdateValidator, Update);
+router.put('/update/:userId', UpdateValidator, Update);
 router.post('/createdb', ExpenseDb);
 router.post('/insertdate', InsDate);
 router.post('/insertexpense', InsExpense);
 router.delete('/deleteexpense/:expend', DeleteExpense);
 router.patch('/updateexpense/:userId/:date/:expend', UpdateExpense);
+router.get('/getexpense/:userId/:date', GetExpense)
 
 export default router;
 

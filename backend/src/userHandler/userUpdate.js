@@ -2,11 +2,11 @@ import { usersCollection } from '../db.js';
 
 const Update = async (req, res) => {
     try {
-        const { username } = req.params;
+        const { userId } = req.params;
         const { newUsername, newPassword } = req.body;
 
         const result = await usersCollection.updateOne(
-            { username: username },
+            { userId: userId },
             { $set: { username: newUsername, password: newPassword } }
         );
 
