@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import bgImage from '../assets/bgImage3.jpg';
 
-function Login() {
+function Login({ setIsAuthenticated }) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState(""); 
@@ -15,19 +15,19 @@ function Login() {
 
         try {
             const response = await axios.post('http://localhost:5000/login', {
-                username,
-                password
+              username,
+              password
             });
 
-            const { success, message } = response.data;
-
+            const { success, message, token } = response.data;
+        
             if (success) {
+                localStorage.setItem('authToken', token);
+                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
                 console.log("Login successful:", message);
-                setErrorMessage(""); 
-                navigate('/'); 
-            } else {
-                console.log("Login failed:", message);
-                setErrorMessage(message);
+                setErrorMessage("");
+                setIsAuthenticated(true); 
+                navigate('/');
             }
         } catch (error) {
             if (error.response) {
