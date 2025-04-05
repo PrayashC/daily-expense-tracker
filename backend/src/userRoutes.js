@@ -16,7 +16,15 @@ import GetExpense from './expenseHandler/getExpense.js';
 
 const router = express.Router();
 
-router.get('/userInfo/:userId', getUser);
+router.get('/userInfo/:userId',verifyToken, getUser);
+router.get('/check-auth', verifyToken, (req, res) => {
+  res.json({
+    success: true,
+    user: req.user
+  });
+});
+
+
 router.post('/signup', SignupValidator, Signup);
 router.post('/login', Login);
 router.delete('/delete/:username', Delete);

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import bgImage from '../assets/bgImage3.jpg';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Signup = () => {
     const [username, setUsername] = useState("");
@@ -19,13 +21,13 @@ const Signup = () => {
 
             const { success, message } = response.data;  
 
-            if (success) {
-                alert(message);  
+            if (success) { 
+                toast.success(message, { position: "top-center", autoClose: 1500 });
                 setUsername(""); 
                 setPassword("");
-                navigate('/login');  
+                setTimeout(() => navigate('/login'), 3500);   
             } else {
-                alert(message);  
+                toast.error(message, { position: "top-center", autoClose: 3000 }); 
             }
         } catch (error) {
             if (error.response && error.response.data.errors) {
@@ -36,7 +38,7 @@ const Signup = () => {
                 setErrorMessage(formattedErrors); 
             } else {
                 console.error('Error signing up:', error);
-                alert('Something went wrong. Please try again.');
+                toast.error('Something went wrong. Please try again.', { position: "top-center" });
             }
         }
     };
